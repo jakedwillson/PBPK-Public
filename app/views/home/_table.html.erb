@@ -1,0 +1,37 @@
+<!--locals: { animal, parameter }-->
+<% if animal.present? && parameter.present? %>
+  <% has_range_info = animal.has_range_info?(parameter) %>
+  <table id="t01">
+    <h1><%= animal.name %></h1>
+
+    <tr>
+      <th>Organ Name</th>
+      <th>Mean</th>
+      <th>SD</th>
+      <th>Sample Size</th>
+      <th>Number of Studies</th>
+
+      <% if has_range_info %>
+        <th>Range</th>
+      <% end %>
+
+      <th>References</th>
+    </tr>
+
+    <% animal.filtered_weights(@organs, parameter).each do |weight| %>
+      <tr>
+        <td><%= render :partial => 'weight_name', locals: { weight: weight } %></td>
+        <td><%= mean_info(weight) %></td>
+        <td><%= weight.standard_deviation %></td>
+        <td><%= weight.sample_size %></td>
+        <td><%= weight.number_of_studies %></td>
+
+        <% if has_range_info %>
+          <td><%= weight.range %></td>
+        <% end %>
+
+        <td><%= citation_link(weight) %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

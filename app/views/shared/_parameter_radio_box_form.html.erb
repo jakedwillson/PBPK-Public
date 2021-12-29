@@ -1,0 +1,27 @@
+<!--locals: { current_parameter, animal, parameters }-->
+<%= form_with(local: true, remote: false, url: set_parameter_path) do |f| %>
+  <%= f.hidden_field :animal_id, :value => animal.try(:id) %>
+  <div class="card parameter">
+    <article class="card-group-item">
+      <header class="card-header">
+        <h6 class="title">Parameter</h6>
+      </header>
+      <div class="filter-content">
+        <div class="card-body-parameter">
+          <% Parameter.all.each do |parameter| %>
+            <div class="radio-button-btn-wrapper mr-2">
+              <% if parameters.include?(parameter) %>
+                <%= f.radio_button :parameter_id, "#{parameter.id}", checked: current_parameter == parameter, class: "radio-button-btn-param background-red" %>
+                <%= label_tag :parameter_id, parameter.name, class: "radio-button-btn-label white enabled" %>
+              <% else %>
+                <%= f.radio_button :parameter_id, "#{parameter.id}", checked: current_parameter == parameter, class: "radio-button-btn-param background-red", disabled: true %>
+                <%= label_tag :parameter_id, parameter.name, class: "radio-button-btn-label white disabled" %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </article>
+  </div>
+  <%= f.submit '', class: 'd-none', id: 'submitMyForm-param' %>
+<% end %>
